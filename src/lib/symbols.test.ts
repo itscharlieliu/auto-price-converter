@@ -25,7 +25,7 @@ const createResponse = (options: {
     status: options.status ?? 200,
     statusText: options.statusText ?? "",
     json: async () => options.json ?? { provider: "fixer", symbols: {} },
-  } as Response);
+  }) as Response;
 
 describe("symbols", () => {
   beforeEach(() => {
@@ -151,7 +151,7 @@ describe("symbols", () => {
 
   it("uses configured API base", async () => {
     const base =
-      import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.up.railway.app";
+      import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
 
     (globalThis.fetch as Mock).mockResolvedValue(
       createResponse({ ok: true, json: {} as SymbolsResponse }),

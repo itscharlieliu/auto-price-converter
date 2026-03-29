@@ -30,7 +30,7 @@ export default defineConfig({
       default_title: "Auto Price Converter",
     },
     permissions: ["storage", "activeTab"],
-    host_permissions: ["https://apc-api.up.railway.app/*"],
+    host_permissions: ["https://apc-api.xerrion.io/*"],
     ...(browser === "firefox" && {
       browser_specific_settings: {
         gecko: {
@@ -53,7 +53,8 @@ export default defineConfig({
     },
     esbuild: {
       // Strip console.log and console.debug in production builds
-      drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
+      drop:
+        process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
     },
   }),
 });

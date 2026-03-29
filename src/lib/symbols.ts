@@ -2,9 +2,7 @@ import type { SymbolsResponse } from "./types";
 import { getCachedSymbols, setCachedSymbols } from "./storage";
 
 const getApiBaseUrl = (): string => {
-  return (
-    import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.up.railway.app"
-  );
+  return import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
 };
 
 export async function fetchSymbols(): Promise<SymbolsResponse> {

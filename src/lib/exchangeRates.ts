@@ -10,9 +10,7 @@ import type {
 import { getCachedRates, setCachedRates } from "./storage";
 
 const getApiBaseUrl = (): string => {
-  return (
-    import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.up.railway.app"
-  );
+  return import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
 };
 
 /**

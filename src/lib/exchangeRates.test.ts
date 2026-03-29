@@ -134,7 +134,7 @@ describe("fetchLatestRates", () => {
 
   it("uses configured API base", async () => {
     const base =
-      import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.up.railway.app";
+      import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
 
     (globalThis.fetch as Mock).mockResolvedValue({
       ok: true,

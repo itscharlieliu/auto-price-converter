@@ -28,7 +28,7 @@ The extension stores the following data locally on your device using your browse
 
 The extension makes requests to fetch current exchange rates:
 
-- **API endpoint**: `https://apc-api.up.railway.app`
+- **API endpoint**: `https://apc-api.xerrion.io`
 - **Data sources**: [Fixer.io](https://fixer.io/) and [Frankfurter](https://frankfurter.dev/) (European Central Bank data)
 - **What is sent**: Only currency codes (e.g., "USD", "EUR") to request rates
 - **What is NOT sent**: No personal data, no browsing history, no page content
