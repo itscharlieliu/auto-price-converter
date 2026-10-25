@@ -11,7 +11,7 @@ import { NUMBER_FORMATS, THEMES } from "./types";
 
 export const DEFAULT_SETTINGS: Settings = {
   enabled: true,
-  targetCurrency: "EUR",
+  targetCurrency: "USD",
   showOriginalPrice: true,
   highlightConverted: true,
   decimalPlaces: 2,

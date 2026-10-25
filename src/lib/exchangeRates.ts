@@ -1,4 +1,7 @@
-// Exchange rates API utilities using backend API
+// Exchange rates API utilities
+// Fork change: rates come directly from the public Frankfurter API
+// (European Central Bank reference rates, no API key, CORS-enabled)
+// instead of the author's apc-api.xerrion.io backend.
 
 import currency from "currency.js";
 import type {
@@ -10,15 +13,16 @@ import type {
 import { getCachedRates, setCachedRates } from "./storage";
 
 const getApiBaseUrl = (): string => {
-  return import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
+  return import.meta.env.VITE_RATES_API_BASE ?? "https://api.frankfurter.dev/v1";
 };
 
 /**
- * Fetches the latest exchange rates from the backend API
+ * Fetches the latest exchange rates from the Frankfurter API
  * Uses EUR as base currency and fetches ALL available currencies
+ * Frankfurter response shape: { amount, base, date, rates }
  */
 export async function fetchLatestRates(): Promise<ExchangeRates> {
-  const url = `${getApiBaseUrl()}/rates/latest`;
+  const url = `${getApiBaseUrl()}/latest?base=EUR`;
 
   const response = await fetch(url);
 
@@ -29,13 +33,16 @@ export async function fetchLatestRates(): Promise<ExchangeRates> {
   const data = await response.json();
 
   if (data.base && data.base !== "EUR") {
-    throw new Error(`Unexpected base currency from backend: ${data.base}`);
+    throw new Error(`Unexpected base currency from Frankfurter: ${data.base}`);
   }
 
   return {
     base: "EUR",
     date: data.date,
-    fetchedAt: data.fetched_at ?? undefined,
+    // Frankfurter has no fetched_at; stamp the fetch time so the
+    // 24h cache check in storage.ts (which requires fetchedAt) works.
+    // A legacy backend response may still provide fetched_at.
+    fetchedAt: data.fetched_at ?? new Date().toISOString(),
     rates: {
       EUR: 1,
       ...data.rates,

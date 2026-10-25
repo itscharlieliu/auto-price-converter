@@ -57,8 +57,22 @@ describe("symbols", () => {
     );
 
     await expect(fetchSymbols()).resolves.toEqual({
-      provider: "fixer",
+      provider: "frankfurter",
       symbols: {},
+    });
+  });
+
+  it("fetchSymbols parses the Frankfurter flat currency map", async () => {
+    (globalThis.fetch as Mock).mockResolvedValue(
+      createResponse({
+        ok: true,
+        json: { USD: "United States Dollar", EUR: "Euro" } as never,
+      }),
+    );
+
+    await expect(fetchSymbols()).resolves.toEqual({
+      provider: "frankfurter",
+      symbols: { USD: "United States Dollar", EUR: "Euro" },
     });
   });
 
@@ -68,7 +82,7 @@ describe("symbols", () => {
     );
 
     await expect(fetchSymbols()).resolves.toEqual({
-      provider: "fixer",
+      provider: "frankfurter",
       symbols: {},
     });
   });
@@ -151,13 +165,13 @@ describe("symbols", () => {
 
   it("uses configured API base", async () => {
     const base =
-      import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
+      import.meta.env.VITE_RATES_API_BASE ?? "https://api.frankfurter.dev/v1";
 
     (globalThis.fetch as Mock).mockResolvedValue(
       createResponse({ ok: true, json: {} as SymbolsResponse }),
     );
 
     await fetchSymbols();
-    expect(globalThis.fetch).toHaveBeenCalledWith(`${base}/symbols/latest`);
+    expect(globalThis.fetch).toHaveBeenCalledWith(`${base}/currencies`);
   });
 });
