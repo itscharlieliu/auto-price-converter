@@ -104,6 +104,27 @@ describe("fetchLatestRates", () => {
     });
   });
 
+  it("handles the Frankfurter shape (no fetched_at)", async () => {
+    (globalThis.fetch as Mock).mockResolvedValue({
+      ok: true,
+      statusText: "OK",
+      json: async () => ({
+        amount: 1,
+        base: "EUR",
+        date: "2024-02-01",
+        rates: { USD: 1.2 },
+      }),
+    } as Response);
+
+    const result = await fetchLatestRates();
+    expect(result.base).toBe("EUR");
+    expect(result.date).toBe("2024-02-01");
+    expect(result.rates).toEqual({ EUR: 1, USD: 1.2 });
+    // fetchedAt is stamped locally so the 24h cache validation passes
+    expect(typeof result.fetchedAt).toBe("string");
+    expect(Number.isNaN(Date.parse(result.fetchedAt!))).toBe(false);
+  });
+
   it("throws when response is not ok", async () => {
     (globalThis.fetch as Mock).mockResolvedValue({
       ok: false,
@@ -128,13 +149,13 @@ describe("fetchLatestRates", () => {
     } as Response);
 
     await expect(fetchLatestRates()).rejects.toThrow(
-      "Unexpected base currency from backend: USD",
+      "Unexpected base currency from Frankfurter: USD",
     );
   });
 
   it("uses configured API base", async () => {
     const base =
-      import.meta.env.VITE_RATES_API_BASE ?? "https://apc-api.xerrion.io";
+      import.meta.env.VITE_RATES_API_BASE ?? "https://api.frankfurter.dev/v1";
 
     (globalThis.fetch as Mock).mockResolvedValue({
       ok: true,
@@ -147,7 +168,7 @@ describe("fetchLatestRates", () => {
     } as Response);
 
     await fetchLatestRates();
-    expect(globalThis.fetch).toHaveBeenCalledWith(`${base}/rates/latest`);
+    expect(globalThis.fetch).toHaveBeenCalledWith(`${base}/latest?base=EUR`);
   });
 });
 

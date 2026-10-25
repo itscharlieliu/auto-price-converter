@@ -30,7 +30,7 @@ export default defineConfig({
       default_title: "Auto Price Converter",
     },
     permissions: ["storage", "activeTab"],
-    host_permissions: ["https://apc-api.xerrion.io/*"],
+    host_permissions: ["https://api.frankfurter.dev/*"],
     ...(browser === "firefox" && {
       browser_specific_settings: {
         gecko: {

@@ -36,7 +36,7 @@
 ## Features
 
 - **Automatic Price Detection** — Intelligently detects prices in 30+ major currencies on any website
-- **Live Exchange Rates** — Fetches current rates from Fixer.io and Frankfurter
+- **Live Exchange Rates** — Fetches current rates directly from Frankfurter (European Central Bank data, no API key)
 - **Dynamic Content Support** — Watches for dynamically loaded content and converts new prices in real-time
 - **Highly Customizable** — Choose your target currency, number format, decimal places, and display preferences
 - **Modern UI** — Beautiful popup and options page for easy configuration
@@ -147,7 +147,7 @@ This extension respects your privacy:
 
 ## Credits
 
-- Exchange rates provided by [Fixer.io](https://fixer.io/) and [Frankfurter API](https://frankfurter.dev/)
+- Exchange rates provided by [Frankfurter API](https://frankfurter.dev/)
 - UI components from [shadcn-svelte](https://shadcn-svelte.com/)
 - Icons from [Lucide](https://lucide.dev/)
 
