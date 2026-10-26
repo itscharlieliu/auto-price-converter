@@ -195,8 +195,18 @@ function replaceSplitPrices(
   }
 
   // Fallback: Try to detect price from combined element text
-  // This handles cases without screen-reader text
-  const combinedText = element.textContent || "";
+  // This handles cases without screen-reader text.
+  // Join individual text nodes with spaces: split prices are often
+  // rendered as separate spans spaced only by CSS (e.g. airline fare
+  // cards: "SGD" | "2,540" | ".40"), so raw textContent glues them
+  // into "SGD2,540.40", which the price patterns cannot match.
+  const nodeTexts = getVisibleTextNodes(element).map(
+    (node) => node.textContent || "",
+  );
+  const combinedText =
+    nodeTexts.length > 0
+      ? nodeTexts.join(" ").replace(/\s+/g, " ").trim()
+      : element.textContent || "";
 
   // Guard: Skip elements with too much text (probably not a price container)
   // This prevents false positives on documentation pages, articles, etc.

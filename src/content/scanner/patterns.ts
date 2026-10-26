@@ -62,8 +62,12 @@ export function buildPatterns(exchangeRates: ExchangeRates): PricePatterns {
   const isoPattern = isoCodes.join("|");
 
   // Quick check regex (for pruning subtrees)
+  // ISO codes must also match when glued to an amount with no whitespace
+  // (split prices spaced only by CSS, e.g. "SGD2,540.40"): there is no word
+  // boundary between the code and the digits, so \\b(ISO)\\b never matches.
+  // This check only prunes - strict validation still happens in detectPrices.
   const quickCheck = new RegExp(
-    `[${SINGLE_CHAR_SYMBOLS}]|\\b(${isoPattern})\\b`,
+    `[${SINGLE_CHAR_SYMBOLS}]|\\b(${isoPattern})|(${isoPattern})\\b`,
     "i",
   );
 
